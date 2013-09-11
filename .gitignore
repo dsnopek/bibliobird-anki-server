@@ -1,3 +1,7 @@
+*~
+/development.ini
+/logging.conf
+/server.log
 *.py[cod]
 
 # C extensions
