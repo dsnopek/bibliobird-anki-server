@@ -35,6 +35,8 @@ class BibliobirdSyncApp(SyncApp):
                 self._connect_mysql()
                 cur = self.conn.cursor()
                 cur.execute(sql, args)
+            else:
+                raise
         return cur
 
     def authenticate(self, username, password):
@@ -57,5 +59,5 @@ class BibliobirdSyncApp(SyncApp):
 
 # Our entry point
 def make_app(global_conf, **local_conf):
-    return SyncApp(**local_conf)
+    return BibliobirdSyncApp(**local_conf)
 
