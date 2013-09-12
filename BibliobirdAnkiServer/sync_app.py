@@ -2,6 +2,7 @@
 import MySQLdb
 
 from AnkiServer.apps.sync_app import SyncApp
+from BibliobirdAnkiServer.common import CollectionInitializer
 
 class BibliobirdSyncApp(SyncApp):
     def __init__(self, *args, **kw):
@@ -59,5 +60,6 @@ class BibliobirdSyncApp(SyncApp):
 
 # Our entry point
 def make_app(global_conf, **local_conf):
+    local_conf['setup_new_collection'] = CollectionInitializer()
     return BibliobirdSyncApp(**local_conf)
 
