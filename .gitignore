@@ -2,6 +2,7 @@
 /development.ini
 /logging.conf
 /server.log
+/session.db
 *.py[cod]
 
 # C extensions

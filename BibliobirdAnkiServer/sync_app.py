@@ -1,7 +1,7 @@
 
 import MySQLdb
 
-from AnkiServer.apps.sync_app import SyncApp, SimpleUserManager
+from AnkiServer.apps.sync_app import SyncApp, SqliteSessionManager, SimpleUserManager
 from BibliobirdAnkiServer.common import CollectionInitializer
 
 class MysqlUserManager(SimpleUserManager):
@@ -58,7 +58,9 @@ class MysqlUserManager(SimpleUserManager):
 
 # Our entry point
 def make_app(global_conf, **local_conf):
-    local_conf['setup_new_collection'] = CollectionInitializer()
+    if local_conf.has_key('session_db_path'):
+        local_conf['session_manager'] = SqliteSessionManager(local_conf['session_db_path'])
     local_conf['user_manager'] = MysqlUserManager(**local_conf)
+    local_conf['setup_new_collection'] = CollectionInitializer()
     return SyncApp(**local_conf)
 
