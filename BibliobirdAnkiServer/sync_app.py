@@ -1,13 +1,11 @@
 
 import MySQLdb
 
-from AnkiServer.apps.sync_app import SyncApp
+from AnkiServer.apps.sync_app import SyncApp, SimpleUserManager
 from BibliobirdAnkiServer.common import CollectionInitializer
 
-class BibliobirdSyncApp(SyncApp):
+class MysqlUserManager(SimpleUserManager):
     def __init__(self, *args, **kw):
-        SyncApp.__init__(self, *args, **kw)
-
         # setup mysql connection
         mysql_args = {}
         for k, v in kw.items():
@@ -46,7 +44,7 @@ class BibliobirdSyncApp(SyncApp):
             row = cur.fetchone()
             return row is not None
 
-        return True
+        return False
 
     def username2dirname(self, username):
         if len(self.mysql_args) > 0 and self.sql_username2dirname is not None:
@@ -61,5 +59,6 @@ class BibliobirdSyncApp(SyncApp):
 # Our entry point
 def make_app(global_conf, **local_conf):
     local_conf['setup_new_collection'] = CollectionInitializer()
-    return BibliobirdSyncApp(**local_conf)
+    local_conf['user_manager'] = MysqlUserManager(**local_conf)
+    return SyncApp(**local_conf)
 
