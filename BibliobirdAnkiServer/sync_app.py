@@ -61,6 +61,8 @@ def make_app(global_conf, **local_conf):
     if local_conf.has_key('session_db_path'):
         local_conf['session_manager'] = SqliteSessionManager(local_conf['session_db_path'])
     local_conf['user_manager'] = MysqlUserManager(**local_conf)
-    local_conf['setup_new_collection'] = CollectionInitializer()
+    setup_or_repair = CollectionInitializer()
+    local_conf['setup_new_collection'] = setup_or_repair
+    local_conf['hook_upload'] = setup_or_repair
     return SyncApp(**local_conf)
 
