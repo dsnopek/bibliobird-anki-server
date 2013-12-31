@@ -46,10 +46,13 @@ def make_app(global_conf, **local_conf):
     from AnkiServer.utils import setup_logging
     setup_logging(local_conf.get('logging.config_file'))
 
+    setup_collection = CollectionInitializer()
+
     app = RestApp(
         data_root=local_conf['data_root'],
         allowed_hosts=local_conf.get('allowed_hosts', '127.0.0.1'),
-        setup_new_collection=CollectionInitializer()
+        setup_new_collection=setup_collection,
+        hook_pre_execute=setup_collection
     )
 
     app.add_handler_group('collection', CollectionHandler())
